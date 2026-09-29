@@ -1,0 +1,12 @@
+ACTUALIZACIÓN DEL TABLERO SIAGIE
+
+1. Abra el tablero publicado en GitHub Pages.
+2. Pulse “Procesar nuevo Excel”.
+3. Seleccione el nuevo Excel de SIAGIE.
+4. El aplicativo valida la estructura y toma únicamente UGEL 01–07.
+5. Se descargará automáticamente un archivo llamado matricula.json.
+6. En GitHub, abra la carpeta data y reemplace data/matricula.json por el nuevo archivo.
+7. Haga Commit changes. No cambie index.html.
+8. Espere 1–3 minutos y actualice el tablero (Ctrl+F5).
+
+El tablero público siempre lee data/matricula.json al abrirse.
