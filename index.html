@@ -38,10 +38,18 @@
 .multi-menu input{accent-color:#0875c9}
 .multi-menu .all-choice{border-bottom:1px solid #dce7ef;font-weight:700!important}
 @media(max-width:950px){.filters{overflow-x:auto!important}.filters>div{flex:0 0 125px}.filters .ie-filter{flex:0 0 195px}.multi-menu{position:fixed;top:auto;left:12px;right:12px;width:auto;max-width:none;max-height:45vh}}
+</style><style>
+.filters{align-items:end!important;padding-top:10px!important}
+.filters .ie-filter{align-self:end!important}
+.filters .ie-filter>label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.multi-search-head{position:sticky;top:0;background:#fff;padding:5px 2px 8px;z-index:1;border-bottom:1px solid #dbe6ee}
+.multi-search-head input{width:100%;box-sizing:border-box;min-width:195px;padding:8px;border:1px solid #b7cbdc;border-radius:6px;font-size:12px}
+.multi-help{font-size:11px;color:#60768c;padding:5px 3px;line-height:1.35}
+#multi_fie .multi-menu{min-width:300px;max-width:450px}
 </style></head><body>
 <div class="head"><div class="brand">DRELM<br><small>Dirección Regional de Educación<br>de Lima Metropolitana</small></div><div class="title"><h1>Matrícula SIAGIE – Lima Metropolitana</h1><div>Seguimiento de matrícula de Educación Básica</div></div><div class="meta">Fuente: SIAGIE – MINEDU<br>Corte: <b id="cut">-</b></div></div>
 <div class="tabs"><div class="tab active" data-v="res"><i data-lucide="house"></i>Resumen</div><div class="tab" data-v="grade"><i data-lucide="chart-no-axes-column"></i>Detalle por UGEL</div><div class="tab" data-v="ugel"><i data-lucide="graduation-cap"></i>Detalle por grado</div><div class="tab" data-v="ie"><i data-lucide="school"></i>Instituciones Educativas</div><div class="tab" data-v="cal"><i data-lucide="database"></i>Base / Calidad de datos</div></div>
-<div class="page"><div class="filters"><div><label>UGEL</label><select id="fu" class="native-filter"></select></div><div><label>Distrito</label><select id="fd" class="native-filter"></select></div><div><label>Gestión</label><select id="fg" class="native-filter"></select></div><div><label>Modalidad</label><select id="fm" class="native-filter"></select></div><div><label>Nivel</label><select id="fn" class="native-filter"></select></div><div><label>Grado / edad</label><select id="fr" class="native-filter"></select></div><div><label>Sexo</label><select id="fs" class="native-filter"><option value="">Todos</option><option>Hombre</option><option>Mujer</option></select></div><div class="ie-filter"><label for="fieSearch">Institución educativa (nombre / código modular)</label><input id="fieSearch" class="search" type="search" placeholder="Buscar IE o código modular..." autocomplete="off"><select id="fie" class="native-filter" aria-label="Seleccionar institución educativa"><option value="">Todas las IIEE</option></select></div><button class="clear" id="clear">↻ Limpiar filtros</button></div>
+<div class="page"><div class="filters"><div><label>UGEL</label><select id="fu" class="native-filter"></select></div><div><label>Distrito</label><select id="fd" class="native-filter"></select></div><div><label>Gestión</label><select id="fg" class="native-filter"></select></div><div><label>Modalidad</label><select id="fm" class="native-filter"></select></div><div><label>Nivel</label><select id="fn" class="native-filter"></select></div><div><label>Grado / edad</label><select id="fr" class="native-filter"></select></div><div><label>Sexo</label><select id="fs" class="native-filter"><option value="">Todos</option><option>Hombre</option><option>Mujer</option></select></div><div class="ie-filter"><label for="fie">Institución educativa</label><select id="fie" class="native-filter" aria-label="Seleccionar institución educativa"><option value="">Todas las IIEE</option></select></div><button class="clear" id="clear">↻ Limpiar filtros</button></div>
 <section id="res" class="view"><div class="kpis" id="kpis"></div><div class="charts"><div class="panel"><div class="pt"><i data-lucide="chart-bar-big"></i>Matrícula por UGEL – Lima Metropolitana</div><div class="pc"><canvas id="cu"></canvas></div></div><div class="panel"><div class="pt"><i data-lucide="landmark"></i>Gestión – Lima Metropolitana</div><div class="pc"><canvas id="cg"></canvas></div></div><div class="panel"><div class="pt"><i data-lucide="book-open"></i>Matrícula por nivel y modalidad – Lima Metropolitana</div><div class="pc"><canvas id="cn"></canvas><div class="chart-note">Participación respecto de la matrícula total de Educación Básica. EBR: Inicial, Primaria y Secundaria; otras modalidades: EBA y EBE.</div></div></div></div>
 <div class="bottom"><div class="panel"><div class="pt"><i data-lucide="table-2"></i>Cuadro solicitado – Educación Básica <span class="toolbar"><button class="btn green" id="exportSummary">↓ Exportar Excel</button> <button class="btn red" onclick="print()">Imprimir / PDF</button></span></div><div class="pc scroll" style="height:330px"><div class="summary-title">AVANCE DE MATRÍCULA DE EDUCACIÓN BÁSICA – LIMA METROPOLITANA</div><table id="summary"></table></div></div><div class="panel"><div class="pt"><i data-lucide="school"></i>Detalle de instituciones educativas</div><div class="pc scroll" style="height:330px"><input class="search" id="q" placeholder="Buscar por código modular o nombre de IE..."><table id="detail"></table></div></div></div></section>
 <section id="ugel" class="view hidden"><div class="module-head"><div><b>Detalle por grado</b><small>Seleccione una UGEL en el filtro superior y revise su matrícula por modalidad, nivel/servicio y grado o edad.</small></div><button class="btn green" id="exportUGEL">↓ Descargar reporte por grado de la UGEL</button></div><div id="ugelInsights" class="ugel-insights"></div><div id="ugelAcademic"></div><div class="panel widepanel"><div class="pt"><i data-lucide="download"></i>Descargas de la UGEL seleccionada</div><div class="pc"><div class="download-grid"><button class="download-card" data-exp="summary"><b>Resumen UGEL</b><span>Gestión, modalidad y nivel</span></button><button class="download-card" data-exp="district"><b>Matrícula por distrito</b><span>Distrito × gestión × nivel</span></button><button class="download-card" data-exp="ie"><b>Matrícula por IE</b><span>IE, código modular y matrícula</span></button><button class="download-card" data-exp="grade"><b>Matrícula por grado</b><span>Modalidad × nivel × grado</span></button></div></div></div></section>
@@ -62,7 +70,8 @@ function syncMulti(id){
  MULTI_STATE[id]=new Set([...picked(id)].filter(x=>allowed.has(x)));
  let b=wrap.querySelector('button'),menu=wrap.querySelector('.multi-menu');
  b.textContent=multiText(id)+' ▾';
- menu.replaceChildren();
+ const head=id==='fie'?menu.querySelector('.multi-search-head'):null;
+ menu.replaceChildren();if(head)menu.append(head);
  const add=(v,t,all=false)=>{
   let label=document.createElement('label');if(all)label.className='all-choice';
   let cb=document.createElement('input');cb.type='checkbox';cb.checked=all?!picked(id).size:picked(id).has(v);
@@ -71,7 +80,14 @@ function syncMulti(id){
   label.append(cb,document.createTextNode(t));menu.append(label);
  };
  add('','Todos / limpiar selección',true);
- for(let o of sel.options)if(o.value)add(o.value,o.textContent);
+ let options=[...sel.options].filter(o=>o.value);
+ if(id==='fie'){
+  const q=(document.getElementById('fieSearch')?.value||'').trim().toLocaleLowerCase();
+  if(!q){const note=document.createElement('div');note.className='multi-help';note.textContent='Escriba para buscar instituciones educativas.';menu.append(note);options=options.filter(o=>picked(id).has(o.value));}
+  else options=options.filter(o=>o.textContent.toLocaleLowerCase().includes(q));
+  options=options.slice(0,120);
+ }
+ for(let o of options)add(o.value,o.textContent);
 }
 function onMultiChanged(id){
  if(id!=='fie'&&id!=='fs'){if(id!=='fr')document.getElementById('fieSearch').value='';refreshDependent(id)}
@@ -83,7 +99,13 @@ function setupMulti(){
   let w=document.createElement('div');w.className='multi-filter';w.id='multi_'+id;
   let b=document.createElement('button');b.type='button';b.className='multi-toggle';b.onclick=(e)=>{e.stopPropagation();document.querySelectorAll('.multi-filter').forEach(x=>{if(x!==w)x.classList.remove('open')});w.classList.toggle('open')};
   let menu=document.createElement('div');menu.className='multi-menu';menu.onclick=e=>e.stopPropagation();
-  w.append(b,menu);sel.insertAdjacentElement('afterend',w);syncMulti(id);
+  w.append(b,menu);sel.insertAdjacentElement('afterend',w);
+  if(id==='fie'){
+    const search=document.createElement('input');search.id='fieSearch';search.type='search';search.className='search';search.autocomplete='off';search.placeholder='Nombre, código modular, IE o local';
+    const tip=document.createElement('div');tip.className='multi-help';tip.textContent='Busque por nombre o código y marque una o varias instituciones.';
+    const head=document.createElement('div');head.className='multi-search-head';head.append(search,tip);menu.prepend(head);
+  }
+  syncMulti(id);
  }
  document.addEventListener('click',()=>document.querySelectorAll('.multi-filter').forEach(x=>x.classList.remove('open')));
 }
@@ -136,7 +158,7 @@ function exportUGELReport(kind='all'){let a=selectedUGELData(),u=selectedUGEL(),
 $('exportUGEL').onclick=()=>exportUGELReport('all');document.querySelectorAll('[data-exp]').forEach(b=>b.onclick=()=>exportUGELReport(b.dataset.exp));$('exportGrade').onclick=()=>{let wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(academicExportRows(comparativeData())),'Detalle por UGEL');XLSX.writeFile(wb,'Detalle_por_UGEL_SIAGIE.xlsx')};document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');document.querySelectorAll('.view').forEach(x=>x.classList.add('hidden'));$(t.dataset.v).classList.remove('hidden');if(t.dataset.v==='ugel'&&!picked('fu').size){MULTI_STATE.fu.add('UGEL 01');refreshDependent()}if(t.dataset.v==='grade'&&picked('fu').size){MULTI_STATE.fu.clear();refreshDependent()}render()});
 $('q').oninput=render;$('q2').oninput=render;
 $('fieSearch').oninput=()=>{refreshDependent();render()};
-$('clear').onclick=()=>{MULTI_IDS.forEach(id=>MULTI_STATE[id].clear());$('fieSearch').value='';refreshDependent();syncMulti('fs');render()};
+$('clear').onclick=()=>{MULTI_IDS.forEach(id=>MULTI_STATE[id].clear());MULTI_IDS.forEach(id=>MULTI_STATE[id].clear());$('fieSearch').value='';refreshDependent();syncMulti('fs');render()};
 function init(){MULTI_IDS.forEach(id=>MULTI_STATE[id].clear());refreshDependent();syncMulti('fs');$('cut').textContent=DATA[0]?.fecha||'-';$('cut2').textContent=$('cut').textContent;render()}
 async function loadPublishedData(){
   // Siempre inicia con una copia embebida para que el app funcione también al abrir index.html desde la PC.
