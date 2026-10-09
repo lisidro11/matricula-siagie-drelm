@@ -29,7 +29,7 @@
 .filters>div{flex:1 1 0;min-width:0!important;grid-column:auto!important}
 .filters .ie-filter{flex:1.65 1 0;min-width:165px!important}
 .filters .clear{flex:0 0 auto;white-space:nowrap;font-size:11px;padding:9px 6px}
-.native-filter{display:none!important}
+.native-filter{display:block!important}.filters>div:has(.multi-filter)>.native-filter{display:none!important}
 .multi-filter{position:relative;margin-top:4px}
 .multi-toggle{width:100%;height:34px;border:1px solid #bdd0df;background:white;border-radius:6px;color:#164365;font-size:11px;padding:5px 6px;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
 .multi-menu{display:none;position:absolute;z-index:9999;top:100%;left:0;min-width:205px;max-width:310px;width:max-content;background:white;border:1px solid #bdd0df;box-shadow:0 8px 25px #153d6633;border-radius:7px;max-height:280px;overflow:auto;padding:7px}
@@ -157,6 +157,7 @@ function academicExportRows(a){let out=[['Modalidad','Nivel / servicio','UGEL','
 function exportUGELReport(kind='all'){let a=selectedUGELData(),u=selectedUGEL(),wb=XLSX.utils.book_new(),safe=u.replace(/\s+/g,'_');let add=(data,name)=>XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(data),name);if(kind==='all'||kind==='summary')add([['REPORTE DE MATRÍCULA - '+u],['Fecha de corte',$('cut').textContent],[],['UGEL','Total','Pública','Privada','Inicial','Primaria','Secundaria','EBA','EBE'],summaryRows(a).find(r=>r[0]===u)||[u,sum(a)]],'Resumen');if(kind==='all'||kind==='district'){let ad={};a.forEach(r=>{let k=[r.d,r.g,classify(r)].join('|');ad[k]=(ad[k]||0)+sexVal(r)});add([['Distrito','Gestión','Nivel / modalidad','Matrícula'],...Object.entries(ad).map(([k,v])=>[...k.split('|'),v])],'Distritos')}if(kind==='all'||kind==='ie')add([['UGEL','Distrito','Código modular','Institución educativa','Gestión','Modalidad','Nivel','Matrícula'],...detailRows(a).map(o=>[o.r.u,o.r.d,o.r.cm,o.r.ie,o.r.g,o.r.m,o.r.n,o.t])],'Instituciones');if(kind==='all'||kind==='grade')add(academicExportRows(a).filter((r,i)=>i===0||r[2]==='Lima Metropolitana'),'Grados');XLSX.writeFile(wb,`Reporte_${safe}_SIAGIE.xlsx`)}
 $('exportUGEL').onclick=()=>exportUGELReport('all');document.querySelectorAll('[data-exp]').forEach(b=>b.onclick=()=>exportUGELReport(b.dataset.exp));$('exportGrade').onclick=()=>{let wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(academicExportRows(comparativeData())),'Detalle por UGEL');XLSX.writeFile(wb,'Detalle_por_UGEL_SIAGIE.xlsx')};document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');document.querySelectorAll('.view').forEach(x=>x.classList.add('hidden'));$(t.dataset.v).classList.remove('hidden');if(t.dataset.v==='ugel'&&!picked('fu').size){MULTI_STATE.fu.add('UGEL 01');refreshDependent()}if(t.dataset.v==='grade'&&picked('fu').size){MULTI_STATE.fu.clear();refreshDependent()}render()});
 $('q').oninput=render;$('q2').oninput=render;
+setupMulti();
 $('fieSearch').oninput=()=>{refreshDependent();render()};
 $('clear').onclick=()=>{MULTI_IDS.forEach(id=>MULTI_STATE[id].clear());MULTI_IDS.forEach(id=>MULTI_STATE[id].clear());$('fieSearch').value='';refreshDependent();syncMulti('fs');render()};
 function init(){MULTI_IDS.forEach(id=>MULTI_STATE[id].clear());refreshDependent();syncMulti('fs');$('cut').textContent=DATA[0]?.fecha||'-';$('cut2').textContent=$('cut').textContent;render()}
@@ -174,5 +175,5 @@ async function loadPublishedData(){
     console.error('No se pudo cargar el corte publicado:',err);document.getElementById('cut').textContent='ERROR AL CARGAR CORTE';document.getElementById('cut2').textContent='ERROR AL CARGAR CORTE';alert('No se pudo cargar data/matricula.json. Verifique la publicación en GitHub Pages. Los datos visibles pueden ser de una copia anterior.');
   }
 }
-setupMulti();loadPublishedData();
+loadPublishedData();
 </script></body></html>
